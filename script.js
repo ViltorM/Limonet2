@@ -50,6 +50,14 @@ function applyTranslations() {
       el.textContent = translations[lang][key];
     }
   });
+  
+  // Обновляем плейсхолдеры
+  document.querySelectorAll('[data-translate-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-translate-placeholder');
+    if (translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
 }
 
 function renderProducts() {
@@ -175,14 +183,22 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
   
   const formData = new FormData(this);
   const order = {
+    id: Date.now(), // Уникальный ID заказа
     customer: Object.fromEntries(formData),
     items: [...cart],
     total: document.getElementById('cart-total').textContent,
-    date: new Date().toISOString()
+    date: new Date().toLocaleString('ua-UA', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }),
+    status: 'new' // Статус заказа: new, processing, completed, cancelled
   };
   
-  // В реальном приложении здесь была бы отправка на сервер
-  console.log('Order submitted:', order);
+  // Сохраняем заказ
+  saveOrder(order);
   
   alert(lang === 'ua' 
     ? 'Замовлення оформлено! Ми з вами зв\'яжемось.' 
@@ -194,6 +210,21 @@ document.getElementById('order-form').addEventListener('submit', function(e) {
   renderCart();
   this.reset();
 });
+
+function saveOrder(order) {
+  // Получаем текущие заказы
+  const orders = JSON.parse(localStorage.getItem('limonet_orders')) || [];
+  
+  // Добавляем новый заказ
+  orders.push(order);
+  
+  // Сохраняем обратно
+  localStorage.setItem('limonet_orders', JSON.stringify(orders));
+  
+  // Оповещаем админ-панель о новом заказе
+  const event = new Event('newOrder');
+  document.dispatchEvent(event);
+}
 
 // Для админ-панели: обновляем данные при изменении
 document.addEventListener('dataUpdated', () => {
