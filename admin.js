@@ -44,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('cancelProductBtn')?.addEventListener('click', hideProductForm);
   document.getElementById('saveProductBtn')?.addEventListener('click', saveProduct);
   
+  // Заказы
+  document.getElementById('applyFilterBtn')?.addEventListener('click', applyOrderFilter);
+  
   // Дизайн
   document.getElementById('saveCssBtn')?.addEventListener('click', saveCss);
   
@@ -80,6 +83,9 @@ function loadData() {
     .then(css => {
       document.getElementById('cssContent').value = css;
     });
+  
+  // Загрузка заказов
+  renderOrders();
 }
 
 // Обновление счетчиков
@@ -104,6 +110,11 @@ function showSection(sectionId) {
   
   document.getElementById(`${sectionId}Section`).classList.add('active');
   document.querySelector(`.admin-menu li[data-section="${sectionId}"]`).classList.add('active');
+  
+  // Загружаем заказы при переходе в раздел
+  if (sectionId === 'orders') {
+    renderOrders();
+  }
 }
 
 // Авторизация
@@ -355,6 +366,191 @@ function deleteProduct(id) {
     categories[catId].items.splice(prodId, 1);
     saveData();
     renderProducts();
+  }
+}
+
+// ===== Заказы =====
+function loadOrders() {
+  return JSON.parse(localStorage.getItem('limonet_orders')) || [];
+}
+
+function applyOrderFilter() {
+  const filter = document.getElementById('orderStatusFilter').value;
+  renderOrders(filter);
+}
+
+function renderOrders(filter = 'all') {
+  const container = document.getElementById('ordersList');
+  const orders = loadOrders();
+  
+  if (orders.length === 0) {
+    container.innerHTML = '<p>Немає замовлень</p>';
+    return;
+  }
+  
+  let filteredOrders = orders;
+  if (filter !== 'all') {
+    filteredOrders = orders.filter(order => order.status === filter);
+  }
+  
+  // Сортируем по дате (новые сверху)
+  filteredOrders.sort((a, b) => b.id - a.id);
+  
+  container.innerHTML = '';
+  
+  filteredOrders.forEach(order => {
+    const orderElement = document.createElement('div');
+    orderElement.className = 'order-card';
+    orderElement.innerHTML = `
+      <div class="order-header">
+        <h3>Замовлення #${order.id}</h3>
+        <span class="order-status ${order.status}">${getOrderStatusText(order.status)}</span>
+        <span class="order-date">${order.date}</span>
+      </div>
+      <div class="order-summary">
+        <p><strong>Клієнт:</strong> ${order.customer.fio}</p>
+        <p><strong>Телефон:</strong> ${order.customer.phone}</p>
+        <p><strong>Сума:</strong> ${order.total} грн</p>
+        <p><strong>Оплата:</strong> ${getPaymentMethod(order.customer.payment)}</p>
+      </div>
+      <button class="btn view-order-details" data-id="${order.id}">Деталі</button>
+    `;
+    container.appendChild(orderElement);
+  });
+  
+  // Добавляем обработчики для кнопок "Детали"
+  document.querySelectorAll('.view-order-details').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const orderId = e.target.getAttribute('data-id');
+      viewOrderDetails(orderId);
+    });
+  });
+}
+
+function getOrderStatusText(status) {
+  switch(status) {
+    case 'new': return 'Новий';
+    case 'processing': return 'В обробці';
+    case 'completed': return 'Завершено';
+    case 'cancelled': return 'Скасовано';
+    default: return status;
+  }
+}
+
+function getPaymentMethod(payment) {
+  if (payment === 'card') return 'На картку';
+  if (payment === 'cod') return 'Накладений платіж';
+  return payment;
+}
+
+function viewOrderDetails(orderId) {
+  const orders = loadOrders();
+  const order = orders.find(o => o.id == orderId);
+  
+  if (!order) {
+    alert('Замовлення не знайдено');
+    return;
+  }
+  
+  // Формируем HTML с деталями заказа
+  let itemsHtml = '';
+  order.items.forEach(item => {
+    itemsHtml += `
+      <tr>
+        <td><img src="${item.image}" alt="${item.name}" style="width:50px;"></td>
+        <td>${item.name}</td>
+        <td>${item.quantity}</td>
+        <td>${item.price} грн</td>
+        <td>${item.price * item.quantity} грн</td>
+      </tr>
+    `;
+  });
+  
+  const detailsHtml = `
+    <div class="order-details">
+      <h2>Замовлення #${order.id}</h2>
+      <p><strong>Статус:</strong> 
+        <select id="orderStatus" class="form-control">
+          <option value="new" ${order.status === 'new' ? 'selected' : ''}>Новий</option>
+          <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>В обробці</option>
+          <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>Завершено</option>
+          <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Скасовано</option>
+        </select>
+      </p>
+      
+      <div class="customer-info">
+        <h3>Інформація про клієнта</h3>
+        <p><strong>ПІБ:</strong> ${order.customer.fio}</p>
+        <p><strong>Телефон:</strong> ${order.customer.phone}</p>
+        <p><strong>Місто:</strong> ${order.customer.city}</p>
+        <p><strong>Відділення пошти:</strong> ${order.customer.post}</p>
+        <p><strong>Спосіб оплати:</strong> ${getPaymentMethod(order.customer.payment)}</p>
+        <p><strong>Коментар:</strong> ${order.customer.comment || '-'}</p>
+      </div>
+      
+      <div class="order-items">
+        <h3>Товари</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Фото</th>
+              <th>Назва</th>
+              <th>Кількість</th>
+              <th>Ціна</th>
+              <th>Сума</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsHtml}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4" style="text-align: right;"><strong>Загальна сума:</strong></td>
+              <td><strong>${order.total} грн</strong></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      
+      <div class="order-actions">
+        <button id="saveOrderBtn" class="btn">Зберегти зміни</button>
+        <button id="closeOrderDetails" class="btn" style="background: #95a5a6;">Закрити</button>
+      </div>
+    </div>
+  `;
+  
+  // Создаем модальное окно
+  const modal = document.createElement('div');
+  modal.className = 'order-modal';
+  modal.innerHTML = detailsHtml;
+  document.body.appendChild(modal);
+  
+  // Обработчики кнопок
+  document.getElementById('saveOrderBtn').addEventListener('click', () => {
+    saveOrderStatus(orderId, document.getElementById('orderStatus').value);
+  });
+  
+  document.getElementById('closeOrderDetails').addEventListener('click', () => {
+    modal.remove();
+  });
+}
+
+function saveOrderStatus(orderId, newStatus) {
+  const orders = loadOrders();
+  const orderIndex = orders.findIndex(o => o.id == orderId);
+  
+  if (orderIndex !== -1) {
+    orders[orderIndex].status = newStatus;
+    localStorage.setItem('limonet_orders', JSON.stringify(orders));
+    
+    // Обновляем список заказов
+    const filter = document.getElementById('orderStatusFilter').value;
+    renderOrders(filter);
+    
+    // Закрываем модальное окно
+    document.querySelector('.order-modal').remove();
+    
+    alert('Статус замовлення оновлено!');
   }
 }
 
