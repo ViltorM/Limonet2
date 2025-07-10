@@ -1,0 +1,33 @@
+[
+  {
+    "category": "Футляр №1",
+    "items": [
+      {
+        "name": "Компактний футляр",
+        "size": "11×8×4",
+        "price": 250,
+        "image": "https://placehold.co/250x160?text=11x8x4",
+        "status": "available"
+      },
+      {
+        "name": "Середній футляр",
+        "size": "13×10×4",
+        "price": 270,
+        "image": "https://placehold.co/250x160?text=13x10x4",
+        "status": "soon"
+      }
+    ]
+  },
+  {
+    "category": "Футляр №2",
+    "items": [
+      {
+        "name": "Великий футляр",
+        "size": "15×11×5",
+        "price": 290,
+        "image": "https://placehold.co/250x160?text=15x11x5",
+        "status": "available"
+      }
+    ]
+  }
+]

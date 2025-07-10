@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адмін-панель Limonet</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --admin-primary: #2c3e50;
+      --admin-secondary: #3498db;
+    }
+    
+    .admin-container {
+      display: flex;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    
+    .admin-sidebar {
+      width: 250px;
+      background: var(--admin-primary);
+      color: white;
+      padding: 20px 0;
+    }
+    
+    .admin-content {
+      flex: 1;
+      padding: 20px;
+      background: #f5f7fa;
+    }
+    
+    .admin-logo {
+      text-align: center;
+      padding: 20px;
+      border-bottom: 1px solid #34495e;
+    }
+    
+    .admin-menu {
+      list-style: none;
+      padding: 0;
+      margin-top: 30px;
+    }
+    
+    .admin-menu li {
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .admin-menu li:hover, .admin-menu li.active {
+      background: #34495e;
+      border-left: 4px solid var(--admin-secondary);
+    }
+    
+    .section {
+      display: none;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      background: var(--admin-secondary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    
+    .btn:hover {
+      background: #2980b9;
+    }
+    
+    .category-list, .product-list {
+      margin-top: 20px;
+    }
+    
+    .category-card, .product-card {
+      border: 1px solid #eee;
+      padding: 15px;
+      border-radius: 8px;
+      background: white;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .css-editor {
+      display: flex;
+      gap: 20px;
+      height: 70vh;
+    }
+    
+    #cssContent {
+      flex: 1;
+      padding: 15px;
+      font-family: monospace;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-height: 300px;
+      white-space: pre;
+    }
+    
+    .css-preview {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      overflow: auto;
+    }
+    
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Форма авторизации -->
+  <div id="loginSection" class="login-container">
+    <h2>Вхід в адмін-панель</h2>
+    <div class="form-group">
+      <label for="adminLogin">Логін</label>
+      <input type="text" id="adminLogin" class="form-control" required>
+    </div>
+    <div class="form-group">
+      <label for="adminPassword">Пароль</label>
+      <input type="password" id="adminPassword" class="form-control" required>
+    </div>
+    <button id="loginBtn" class="btn">Увійти</button>
+    <p id="loginMessage" style="color: red; margin-top: 15px;"></p>
+  </div>
+  
+  <!-- Основная админ-панель -->
+  <div id="adminPanel" class="admin-container" style="display: none;">
+    <!-- Сайдбар -->
+    <div class="admin-sidebar">
+      <div class="admin-logo">
+        <h2>Адмін-панель</h2>
+      </div>
+      <ul class="admin-menu">
+        <li data-section="dashboard" class="active">Головна</li>
+        <li data-section="categories">Категорії</li>
+        <li data-section="products">Товари</li>
+        <li data-section="design">Дизайн сайту</li>
+        <li data-section="settings">Налаштування</li>
+        <li id="logoutBtn">Вийти</li>
+      </ul>
+    </div>
+    
+    <!-- Основной контент -->
+    <div class="admin-content">
+      <!-- Dashboard -->
+      <div id="dashboardSection" class="section active">
+        <h1>Ласкаво просимо!</h1>
+        <p>Ви можете керувати товарами, змінювати дизайн сайту та налаштовувати параметри.</p>
+        <div class="stats">
+          <h3>Статистика</h3>
+          <p>Кількість категорій: <span id="categoriesCount">0</span></p>
+          <p>Кількість товарів: <span id="productsCount">0</span></p>
+        </div>
+      </div>
+      
+      <!-- Управление категориями -->
+      <div id="categoriesSection" class="section">
+        <h1>Управління категоріями</h1>
+        <button id="addCategoryBtn" class="btn">Додати категорію</button>
+        
+        <div id="categoryForm" style="display: none; margin-top: 20px;">
+          <h2>Додати нову категорію</h2>
+          <div class="form-group">
+            <label for="categoryName">Назва категорії</label>
+            <input type="text" id="categoryName" class="form-control" required>
+          </div>
+          <button id="saveCategoryBtn" class="btn">Зберегти категорію</button>
+          <button id="cancelCategoryBtn" class="btn" style="background: #95a5a6;">Скасувати</button>
+        </div>
+        
+        <h2 style="margin-top: 30px;">Список категорій</h2>
+        <div id="categoriesList" class="category-list">
+          <!-- Категории будут загружены сюда -->
+        </div>
+      </div>
+      
+      <!-- Управление товарами -->
+      <div id="productsSection" class="section">
+        <h1>Управління товарами</h1>
+        <button id="addProductBtn" class="btn">Додати товар</button>
+        
+        <div id="productForm" style="display: none; margin-top: 20px;">
+          <h2>Додати новий товар</h2>
+          <div class="form-group">
+            <label for="productCategory">Категорія</label>
+            <select id="productCategory" class="form-control" required>
+              <!-- Категории будут загружены сюда -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="productName">Назва товару</label>
+            <input type="text" id="productName" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="productSize">Розмір</label>
+            <input type="text" id="productSize" class="form-control" placeholder="11×8×4" required>
+          </div>
+          <div class="form-group">
+            <label for="productPrice">Ціна (грн)</label>
+            <input type="number" id="productPrice" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="productImage">URL зображення</label>
+            <input type="text" id="productImage" class="form-control" required>
+            <small>Вставте посилання на зображення</small>
+          </div>
+          <div class="form-group">
+            <label for="productStatus">Статус</label>
+            <select id="productStatus" class="form-control" required>
+              <option value="available">Доступно</option>
+              <option value="soon">Очікується</option>
+              <option value="hidden">Приховано</option>
+            </select>
+          </div>
+          <button id="saveProductBtn" class="btn">Зберегти товар</button>
+          <button id="cancelProductBtn" class="btn" style="background: #95a5a6;">Скасувати</button>
+        </div>
+        
+        <h2 style="margin-top: 30px;">Список товарів</h2>
+        <div id="productsList" class="product-list">
+          <!-- Товары будут загружены сюда -->
+        </div>
+      </div>
+      
+      <!-- Редактор дизайна -->
+      <div id="designSection" class="section">
+        <h1>Редактор дизайну</h1>
+        <p>Редагуйте CSS-стилі вашого сайту:</p>
+        
+        <div class="css-editor">
+          <textarea id="cssContent" class="form-control"></textarea>
+          <div class="css-preview">
+            <h3>Попередній перегляд</h3>
+            <p>Цей текст демонструє стилі.</p>
+            <button class="btn">Приклад кнопки</button>
+          </div>
+        </div>
+        
+        <button id="saveCssBtn" class="btn" style="margin-top: 20px;">Зберегти зміни</button>
+      </div>
+      
+      <!-- Настройки -->
+      <div id="settingsSection" class="section">
+        <h1>Налаштування</h1>
+        <div class="form-group">
+          <label for="adminUsername">Новий логін</label>
+          <input type="text" id="adminUsername" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="adminNewPassword">Новий пароль</label>
+          <input type="password" id="adminNewPassword" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="adminConfirmPassword">Підтвердити пароль</label>
+          <input type="password" id="adminConfirmPassword" class="form-control">
+        </div>
+        <button id="saveSettingsBtn" class="btn">Зберегти зміни</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
