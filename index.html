@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ua">
 <head>
@@ -32,16 +33,24 @@
       <div class="order-form">
         <h2 data-translate="place_order">Оформити замовлення</h2>
         <form id="order-form">
-          <input type="text" name="fio" placeholder="ПІБ" required />
-          <input type="tel" name="phone" placeholder="Телефон" required />
-          <input type="text" name="city" placeholder="Населений пункт" required />
-          <input type="text" name="post" placeholder="Відділення пошти" required />
+          <div class="form-row">
+            <input type="text" name="fio" placeholder="ПІБ" required data-translate-placeholder="fio_placeholder" />
+            <input type="tel" name="phone" placeholder="Телефон" required data-translate-placeholder="phone_placeholder" />
+          </div>
+          
+          <div class="form-row">
+            <input type="text" name="city" placeholder="Населений пункт" required data-translate-placeholder="city_placeholder" />
+            <input type="text" name="post" placeholder="Відділення пошти" required data-translate-placeholder="post_placeholder" />
+          </div>
+          
           <select name="payment" required>
             <option value="" disabled selected data-translate="choose_payment">Оберіть спосіб оплати</option>
             <option value="card" data-translate="card_payment">На картку</option>
             <option value="cod" data-translate="cod_payment">Накладений платіж</option>
           </select>
-          <textarea name="comment" placeholder="Коментар..."></textarea>
+          
+          <textarea name="comment" placeholder="Коментар..." data-translate-placeholder="comment_placeholder"></textarea>
+          
           <button type="submit" data-translate="submit_order">Надіслати замовлення</button>
         </form>
       </div>
@@ -52,5 +61,28 @@
     <p>&copy; 2025 Limonet</p>
     <p><a href="admin.html" style="font-size: 0.8em; color: #777;">Адмін-панель</a></p>
   </footer>
+
+  <script>
+    // Добавляем иконки для полей формы
+    document.addEventListener('DOMContentLoaded', function() {
+      const addIcon = (selector, iconCode) => {
+        const input = document.querySelector(selector);
+        if (input) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'input-with-icon';
+          input.parentNode.insertBefore(wrapper, input);
+          wrapper.appendChild(input);
+          
+          wrapper.insertAdjacentHTML('afterbegin', 
+            `<span class="input-icon">${iconCode}</span>`);
+        }
+      };
+      
+      addIcon('input[name="fio"]', '👤');
+      addIcon('input[name="phone"]', '📱');
+      addIcon('input[name="city"]', '🏙️');
+      addIcon('input[name="post"]', '📮');
+    });
+  </script>
 </body>
 </html>
