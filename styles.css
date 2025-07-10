@@ -191,7 +191,37 @@ header {
   background: #45a049;
 }
 
-/* Адаптация для мобильных */
+/* ОБНОВЛЕННЫЙ ФУТЕР */
+footer {
+  background: #d4edc9;
+  padding: 20px 10px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9em;
+  transition: color 0.3s;
+}
+
+.admin-link:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+/* Гарантированная видимость на мобильных устройствах */
 @media (max-width: 600px) {
   .form-row {
     flex-direction: column;
@@ -217,5 +247,24 @@ header {
   .order-form button {
     padding-left: 40px;
     font-size: 14px;
+  }
+  
+  /* Адаптация футера для мобильных */
+  footer {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* Защита от закруглений экрана iPhone */
+@supports (padding: max(0px)) {
+  footer {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 }
