@@ -177,6 +177,7 @@
         <li data-section="dashboard" class="active">Головна</li>
         <li data-section="categories">Категорії</li>
         <li data-section="products">Товари</li>
+        <li data-section="orders">Замовлення</li>
         <li data-section="design">Дизайн сайту</li>
         <li data-section="settings">Налаштування</li>
         <li id="logoutBtn">Вийти</li>
@@ -262,6 +263,26 @@
         <h2 style="margin-top: 30px;">Список товарів</h2>
         <div id="productsList" class="product-list">
           <!-- Товары будут загружены сюда -->
+        </div>
+      </div>
+      
+      <!-- Управление заказами -->
+      <div id="ordersSection" class="section">
+        <h1>Управління замовленнями</h1>
+        
+        <div class="order-filters">
+          <select id="orderStatusFilter">
+            <option value="all">Всі замовлення</option>
+            <option value="new">Нові</option>
+            <option value="processing">В обробці</option>
+            <option value="completed">Завершені</option>
+            <option value="cancelled">Скасовані</option>
+          </select>
+          <button id="applyFilterBtn" class="btn">Застосувати</button>
+        </div>
+        
+        <div id="ordersList" class="orders-list">
+          <!-- Заказы будут загружены сюда -->
         </div>
       </div>
       
