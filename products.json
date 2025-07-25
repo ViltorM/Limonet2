@@ -1,17 +1,44 @@
 [
   {
-    "category": "Футляр №1",
+    "category": {
+      "ua": "Футляр №1",
+      "ru": "Футляр №1"
+    },
     "items": [
       {
-        "name": "Компактний футляр",
-        "size": "11×8×4",
+        "name": {
+          "ua": "Компактний футляр",
+          "ru": "Компактный футляр"
+        },
+        "description": {
+          "ua": "Ідеальний для дрібних предметів",
+          "ru": "Идеальный для мелких предметов"
+        },
+        "externalSize": "13×10×5 см",
+        "internalSize": "11×8×4 см",
+        "material": {
+          "ua": "Еко-шкіра",
+          "ru": "Эко-кожа"
+        },
         "price": 250,
         "image": "https://placehold.co/250x160?text=11x8x4",
-        "status": "available"
+        "status": "in_stock"
       },
       {
-        "name": "Середній футляр",
-        "size": "13×10×4",
+        "name": {
+          "ua": "Середній футляр",
+          "ru": "Средний футляр"
+        },
+        "description": {
+          "ua": "Для середнього розміру речей",
+          "ru": "Для вещей среднего размера"
+        },
+        "externalSize": "15×12×6 см",
+        "internalSize": "13×10×4 см",
+        "material": {
+          "ua": "Текстиль",
+          "ru": "Текстиль"
+        },
         "price": 270,
         "image": "https://placehold.co/250x160?text=13x10x4",
         "status": "soon"
@@ -19,14 +46,29 @@
     ]
   },
   {
-    "category": "Футляр №2",
+    "category": {
+      "ua": "Футляр №2",
+      "ru": "Футляр №2"
+    },
     "items": [
       {
-        "name": "Великий футляр",
-        "size": "15×11×5",
+        "name": {
+          "ua": "Великий футляр",
+          "ru": "Большой футляр"
+        },
+        "description": {
+          "ua": "Для великих предметів",
+          "ru": "Для крупных предметов"
+        },
+        "externalSize": "17×14×7 см",
+        "internalSize": "15×11×5 см",
+        "material": {
+          "ua": "Поліуретан",
+          "ru": "Полиуретан"
+        },
         "price": 290,
         "image": "https://placehold.co/250x160?text=15x11x5",
-        "status": "available"
+        "status": "out_of_stock"
       }
     ]
   }
