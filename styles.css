@@ -110,36 +110,6 @@ header {
   fill: currentColor;
 }
 
-/* Фильтры каталога */
-.catalog-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 15px 20px;
-  background: #e8f5e9;
-  border-radius: 10px;
-  margin: 10px 20px 20px;
-}
-
-.filter-group {
-  flex: 1;
-  min-width: 150px;
-}
-
-.filter-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.filter-group select, .filter-group input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
 /* Стили для товаров */
 .products {
   display: flex;
@@ -151,10 +121,6 @@ header {
 /* Контейнеры категорий */
 .category-container {
   margin-bottom: 40px;
-  border: 2px solid #4CAF50;
-  border-radius: 10px;
-  overflow: hidden;
-  cursor: pointer;
 }
 
 /* Общий стиль заголовка категории */
@@ -206,32 +172,29 @@ header {
   box-sizing: border-box;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 20px; /* Отступ снизу */
+  margin-bottom: 20px;
 }
 
-/* ========== РЕЖИМ СЕТКИ ========== */
+/* ========== ОБНОВЛЕННЫЙ РЕЖИМ СЕТКИ ========== */
 .grid-view .products-container {
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
-/* ОСНОВНОЕ ИСПРАВЛЕНИЕ: ДОБАВЛЕНЫ ОТСТУПЫ МЕЖДУ КАРТОЧКАМИ */
 .grid-view .products-group {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Центрирование вместо flex-start */
-  gap: 25px; /* Горизонтальные и вертикальные отступы */
-  padding: 10px 0; /* Дополнительные отступы сверху и снизу */
+  justify-content: center; /* Центрирование карточек */
+  gap: 25px;
+  padding: 10px 0;
 }
 
 .grid-view .product-card {
-  margin: 0;
-  width: calc(25% - 20px);
-  min-width: 270px;
+  width: 270px; /* Фиксированная ширина */
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 15px; /* Дополнительный вертикальный отступ */
+  margin-bottom: 15px;
 }
 
 /* ========== РЕЖИМ СПИСКА ========== */
@@ -242,14 +205,14 @@ header {
   width: 100%;
   max-width: none;
   margin: 0;
-  gap: 20px; /* Отступы между карточками */
+  gap: 20px;
 }
 
 .list-view .products-group {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 20px; /* Отступы между карточками */
+  gap: 20px;
 }
 
 .list-view .product-card {
@@ -264,7 +227,7 @@ header {
   min-height: 180px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 20px; /* Отступ снизу */
+  margin-bottom: 20px;
 }
 
 .list-view .product-card img {
@@ -333,7 +296,7 @@ header {
   position: relative;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 15px; /* ГАРАНТИРОВАННЫЙ ОТСТУП СНИЗУ */
+  margin-bottom: 15px;
 }
 
 .product-card:hover {
@@ -519,7 +482,7 @@ header {
   cursor: not-allowed;
 }
 
-/* Корзина - ОБНОВЛЕННЫЕ СТИЛИ */
+/* Корзина */
 .cart-wrapper {
   display: flex;
   flex-direction: column;
@@ -679,7 +642,6 @@ header {
   color: #000;
 }
 
-/* ИСПРАВЛЕНИЕ: Белый цвет текста для кнопки отправки заказа */
 .order-form .btn-primary {
   color: white !important;
 }
@@ -742,37 +704,6 @@ footer .separator {
   text-decoration: underline;
 }
 
-/* Фиксированная навигация для мобильных */
-.mobile-bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: none;
-  justify-content: space-around;
-  background: #d4edc9;
-  padding: 10px 0;
-  z-index: 1000;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-}
-
-.mobile-bottom-nav button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background: none;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.mobile-bottom-nav button svg {
-  width: 20px;
-  height: 20px;
-}
-
 /* Адаптация для мобильных */
 @media (max-width: 600px) {
   .form-row {
@@ -823,7 +754,15 @@ footer .separator {
     padding: 15px;
     width: 100%;
     max-width: 260px;
-    margin: 0 auto 15px; /* Центрирование карточки */
+  }
+  
+  /* Центрирование карточек в сетке на мобильных */
+  .grid-view .products-group {
+    justify-content: center;
+  }
+  
+  .grid-view .product-card {
+    margin: 0 auto 15px;
   }
   
   .list-view .product-card {
@@ -912,16 +851,6 @@ footer .separator {
   .cart-item .remove-item {
     margin-left: 3px;
   }
-  
-  /* Показываем мобильную навигацию */
-  .mobile-bottom-nav {
-    display: flex;
-  }
-  
-  /* Дополнительный отступ для контента над навигацией */
-  .cart-wrapper, .order-form {
-    padding-bottom: 60px;
-  }
 }
 
 /* Стили для решения проблемы с выбором оплаты */
@@ -982,83 +911,8 @@ select:focus {
   .grid-view .products-group {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 25px;
     row-gap: 25px;
   }
-}
-
-.category-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  padding: 15px 30px;
-  background: #e8f5e9;
-  margin-bottom: 0;
-  transition: all 0.3s;
-  position: relative;
-}
-
-.category-header:hover {
-  background: #d4edc9;
-}
-
-.category-header h3 {
-  margin: 0;
-  text-align: center;
-  flex-grow: 1;
-  font-size: 1.5rem;
-  padding: 0 30px;
-}
-
-.toggle-icon {
-  font-size: 24px;
-  transition: transform 0.3s;
-  min-width: 30px;
-  text-align: center;
-}
-
-.category-content {
-  display: flex;
-  padding: 20px;
-  border-radius: 10px;
-  background: white;
-  margin-bottom: 0;
-  align-items: center;
-  gap: 30px;
-}
-
-.category-image {
-  width: 250px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-.category-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  flex-grow: 1;
-}
-
-.category-material {
-  font-size: 1rem;
-  margin-top: 8px;
-}
-
-.category-size {
-  font-size: 1rem;
-  margin-top: 8px;
-  font-weight: bold;
-}
-
-.expanded .category-content {
-  display: none;
-}
-
-.expanded .toggle-icon {
-  transform: rotate(180deg);
 }
