@@ -175,7 +175,7 @@ header {
   margin-bottom: 20px;
 }
 
-/* ========== ИСПРАВЛЕННЫЙ РЕЖИМ СЕТКИ ДЛЯ ПК ========== */
+/* ========== ПЕРЕРАБОТАННЫЙ РЕЖИМ СЕТКИ ========== */
 .grid-view .products-container {
   display: flex;
   flex-direction: column;
@@ -183,20 +183,17 @@ header {
 }
 
 .grid-view .products-group {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start; /* Выравнивание по левому краю */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 25px;
   padding: 10px 0;
   width: 100%;
 }
 
 .grid-view .product-card {
-  width: calc(25% - 20px); /* 4 карточки в ряд с учетом отступов */
-  min-width: 270px; /* Минимальная ширина карточки */
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 15px;
+  margin-bottom: 0; /* Убрали нижний отступ */
 }
 
 /* ========== РЕЖИМ СПИСКА ========== */
@@ -298,7 +295,6 @@ header {
   position: relative;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 15px;
 }
 
 .product-card:hover {
@@ -760,13 +756,8 @@ footer .separator {
   
   /* Центрирование карточек в сетке на мобильных */
   .grid-view .products-group {
-    justify-content: center;
-  }
-  
-  .grid-view .product-card {
-    margin: 0 auto 15px;
-    width: 100%;
-    max-width: 260px;
+    grid-template-columns: 1fr; /* Одна колонка на мобильных */
+    justify-items: center; /* Центрирование карточек */
   }
   
   .list-view .product-card {
@@ -913,23 +904,15 @@ select:focus {
   }
   
   .grid-view .products-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* Карточки начинаются слева */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
     gap: 25px;
-    row-gap: 25px;
-    width: 100%;
-  }
-  
-  .grid-view .product-card {
-    width: calc(25% - 20px); /* 4 карточки в ряд */
-    min-width: 270px;
   }
 }
 
 /* Для очень широких экранов */
 @media (min-width: 1600px) {
-  .grid-view .product-card {
-    width: calc(20% - 20px); /* 5 карточек в ряд */
+  .grid-view .products-group {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
