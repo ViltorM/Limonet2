@@ -121,24 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  
-  // Инициализация мобильной навигации
-  document.getElementById('catalog-btn').addEventListener('click', () => {
-    document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
-  });
-
-  document.getElementById('cart-btn').addEventListener('click', () => {
-    document.querySelector('.cart').scrollIntoView({ behavior: 'smooth' });
-  });
-
-  document.getElementById('checkout-btn').addEventListener('click', () => {
-    document.querySelector('.order-form').scrollIntoView({ behavior: 'smooth' });
-  });
-  
-  // Инициализация фильтров
-  document.querySelectorAll('#size-filter, #price-filter, #status-filter').forEach(filter => {
-    filter.addEventListener('change', applyFilters);
-  });
 });
 
 function setLang(selectedLang) {
@@ -182,29 +164,6 @@ function applyTranslations() {
     if (translations[lang] && translations[lang][translationKey]) {
       btn.setAttribute('title', translations[lang][translationKey]);
       btn.setAttribute('aria-label', translations[lang][translationKey]);
-    }
-  });
-  
-  // Обновляем фильтры
-  document.querySelectorAll('#size-filter option, #price-filter option, #status-filter option').forEach(option => {
-    const key = option.getAttribute('data-translate');
-    if (key && translations[lang] && translations[lang][key]) {
-      option.textContent = translations[lang][key];
-    }
-  });
-  
-  document.querySelectorAll('.filter-group label').forEach(label => {
-    const key = label.getAttribute('data-translate');
-    if (key && translations[lang] && translations[lang][key]) {
-      label.textContent = translations[lang][key];
-    }
-  });
-  
-  // Обновляем мобильную навигацию
-  document.querySelectorAll('#catalog-btn span, #cart-btn span, #checkout-btn span').forEach(span => {
-    const key = span.getAttribute('data-translate');
-    if (key && translations[lang] && translations[lang][key]) {
-      span.textContent = translations[lang][key];
     }
   });
 }
@@ -314,11 +273,8 @@ function renderProducts() {
     itemsContainer.style.display = 'none'; // По умолчанию скрыт
     categoryWrapper.appendChild(itemsContainer);
     
-    // Обработчик клика по категории
-    categoryWrapper.addEventListener('click', function(e) {
-      // Игнорировать клики на элементах управления внутри карточки
-      if (e.target.closest('.add-to-cart, .quantity-btn, .quantity-input')) return;
-      
+    // Обработчик клика по заголовку
+    header.addEventListener('click', () => {
       const isExpanded = itemsContainer.style.display === 'block';
       itemsContainer.style.display = isExpanded ? 'none' : 'block';
       categoryWrapper.classList.toggle('expanded', !isExpanded);
@@ -493,43 +449,6 @@ function renderCategoryItems(category, catIndex, container) {
       });
     });
   }, 100);
-}
-
-// Фильтрация и сортировка
-function applyFilters() {
-  const sizeFilter = document.getElementById('size-filter').value;
-  const priceFilter = document.getElementById('price-filter').value;
-  const statusFilter = document.getElementById('status-filter').value;
-  
-  products.forEach(category => {
-    category.items.forEach(item => {
-      let visible = true;
-      
-      // Фильтр по размеру
-      if (sizeFilter !== 'all') {
-        const size = item.externalSize || '';
-        if (sizeFilter === 'small' && !size.includes('13')) visible = false;
-        if (sizeFilter === 'medium' && !size.includes('15')) visible = false;
-        if (sizeFilter === 'large' && !size.includes('17')) visible = false;
-      }
-      
-      // Фильтр по статусу
-      if (statusFilter !== 'all' && item.status !== statusFilter) {
-        visible = false;
-      }
-      
-      item.visible = visible;
-    });
-    
-    // Сортировка по цене
-    if (priceFilter === 'asc') {
-      category.items.sort((a, b) => a.price - b.price);
-    } else if (priceFilter === 'desc') {
-      category.items.sort((a, b) => b.price - a.price);
-    }
-  });
-  
-  renderProducts();
 }
 
 function addToCart(catIndex, itemIndex, quantity) {
