@@ -175,7 +175,7 @@ header {
   margin-bottom: 20px;
 }
 
-/* ========== ИСПРАВЛЕННЫЙ РЕЖИМ СЕТКИ ========== */
+/* ========== ПЕРЕРАБОТАННЫЙ РЕЖИМ СЕТКИ ========== */
 .grid-view .products-container {
   display: flex;
   flex-direction: column;
@@ -184,7 +184,8 @@ header {
 
 .grid-view .products-group {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row; /* Горизонтальное направление */
+  flex-wrap: wrap; /* Разрешаем перенос на новую строку */
   gap: 25px;
   padding: 10px 0;
 }
@@ -755,9 +756,10 @@ footer .separator {
     max-width: 260px;
   }
   
-  /* Центрирование карточек в сетке на мобильных */
+  /* Режим сетки на мобильных */
   .grid-view .products-group {
-    justify-content: center;
+    flex-direction: column; /* Вертикальное расположение на мобильных */
+    align-items: center; /* Центрирование карточек */
   }
   
   .list-view .product-card {
@@ -905,6 +907,8 @@ select:focus {
   
   /* Горизонтальное расположение карточек в режиме сетки */
   .grid-view .products-group {
-    justify-content: flex-start; /* Карточки идут слева направо */
+    flex-direction: row; /* Горизонтальное направление */
+    flex-wrap: wrap; /* Разрешаем перенос на новую строку */
+    justify-content: flex-start; /* Выравнивание по левому краю */
   }
 }
