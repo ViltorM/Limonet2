@@ -175,26 +175,26 @@ header {
   margin-bottom: 20px;
 }
 
-/* ========== ПЕРЕРАБОТАННЫЙ РЕЖИМ СЕТКИ ========== */
+/* ========== РЕЖИМ СЕТКИ ========== */
 .grid-view .products-container {
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
+/* ОСНОВНОЕ ИСПРАВЛЕНИЕ: ГОРИЗОНТАЛЬНОЕ РАСПОЛОЖЕНИЕ КАРТОЧЕК */
 .grid-view .products-group {
   display: flex;
-  flex-direction: row; /* Горизонтальное направление */
-  flex-wrap: wrap; /* Разрешаем перенос на новую строку */
+  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: 25px;
   padding: 10px 0;
 }
 
 .grid-view .product-card {
-  width: 270px; /* Фиксированная ширина карточки */
+  width: 270px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   border: 1px solid #eee;
-  margin-bottom: 15px;
 }
 
 /* ========== РЕЖИМ СПИСКА ========== */
@@ -291,7 +291,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 270px; /* Фиксированная ширина */
+  width: 270px;
   box-sizing: border-box;
   position: relative;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -756,10 +756,13 @@ footer .separator {
     max-width: 260px;
   }
   
-  /* Режим сетки на мобильных */
+  /* ЦЕНТРИРОВАНИЕ КАРТОЧЕК В СЕТКЕ НА МОБИЛЬНЫХ */
   .grid-view .products-group {
-    flex-direction: column; /* Вертикальное расположение на мобильных */
-    align-items: center; /* Центрирование карточек */
+    justify-content: center;
+  }
+  
+  .grid-view .product-card {
+    margin: 0 auto 15px;
   }
   
   .list-view .product-card {
@@ -905,10 +908,11 @@ select:focus {
     align-items: flex-start;
   }
   
-  /* Горизонтальное расположение карточек в режиме сетки */
   .grid-view .products-group {
-    flex-direction: row; /* Горизонтальное направление */
-    flex-wrap: wrap; /* Разрешаем перенос на новую строку */
-    justify-content: flex-start; /* Выравнивание по левому краю */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 25px;
+    row-gap: 25px;
   }
 }
