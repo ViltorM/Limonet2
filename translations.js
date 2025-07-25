@@ -24,19 +24,7 @@ translations = {
     size: "Розмір",
     external_size: "Зовнішні розміри",
     internal_size: "Внутрішні розміри",
-    material: "Матеріал",
-    catalog: "Каталог",
-    checkout: "Оформити",
-    filter_size: "Розмір",
-    filter_price: "Ціна",
-    filter_status: "Наявність",
-    all_sizes: "Всі",
-    small: "Малі",
-    medium: "Середні",
-    large: "Великі",
-    price_low: "Від дешевих",
-    price_high: "Від дорогих",
-    all: "Всі"
+    material: "Матеріал"
   },
   ru: {
     logoSubtitle: "Футляры и кейсы для разных нужд",
@@ -63,18 +51,6 @@ translations = {
     size: "Размер",
     external_size: "Внешние размеры",
     internal_size: "Внутренние размеры",
-    material: "Материал",
-    catalog: "Каталог",
-    checkout: "Оформить",
-    filter_size: "Размер",
-    filter_price: "Цена",
-    filter_status: "Наличие",
-    all_sizes: "Все",
-    small: "Малые",
-    medium: "Средние",
-    large: "Большие",
-    price_low: "От дешевых",
-    price_high: "От дорогих",
-    all: "Все"
+    material: "Материал"
   }
 };
