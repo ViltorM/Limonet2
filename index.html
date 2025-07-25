@@ -8,6 +8,125 @@
   <link rel="stylesheet" href="styles.css">
   <script defer src="translations.js"></script>
   <script defer src="script.js"></script>
+  <style>
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 15px 30px;
+      background: #e8f5e9;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: all 0.3s;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .category-header:hover {
+      background: #d4edc9;
+    }
+    
+    .category-header h3 {
+      margin: 0;
+      text-align: center;
+      flex-grow: 1;
+      font-size: 1.5rem;
+      padding: 0 30px;
+    }
+    
+    .toggle-icon {
+      font-size: 24px;
+      transition: transform 0.3s;
+      min-width: 30px;
+      text-align: center;
+    }
+    
+    .category-content {
+      display: flex;
+      padding: 20px;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+      align-items: center;
+      gap: 30px;
+    }
+    
+    .category-image {
+      width: 250px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    
+    .category-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      flex-grow: 1;
+    }
+    
+    .category-material {
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+    
+    .category-size {
+      font-size: 1rem;
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    
+    .expanded .category-content {
+      display: none;
+    }
+    
+    .expanded .toggle-icon {
+      transform: rotate(180deg);
+    }
+    
+    @media (max-width: 600px) {
+      .cart-item img {
+        display: none;
+      }
+      
+      .cart-item .item-info {
+        padding-left: 0;
+      }
+      
+      .category-content {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+        gap: 15px;
+      }
+      
+      .category-info {
+        margin-top: 10px;
+      }
+      
+      .category-header {
+        padding: 12px 15px;
+      }
+      
+      .category-header h3 {
+        font-size: 1.3rem;
+        padding: 0 15px;
+      }
+      
+      .category-image {
+        width: 100%;
+        max-width: 250px;
+        height: 160px;
+      }
+      
+      .category-material, .category-size {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -30,36 +149,6 @@
       </div>
       <div class="featured-items"></div>
     </section>
-
-    <!-- Фильтры каталога -->
-    <div class="catalog-filters">
-      <div class="filter-group">
-        <label data-translate="filter_size">Розмір</label>
-        <select id="size-filter">
-          <option value="all" data-translate="all_sizes">Всі</option>
-          <option value="small" data-translate="small">Маленькі</option>
-          <option value="medium" data-translate="medium">Середні</option>
-          <option value="large" data-translate="large">Великі</option>
-        </select>
-      </div>
-      
-      <div class="filter-group">
-        <label data-translate="filter_price">Ціна</label>
-        <select id="price-filter">
-          <option value="asc" data-translate="price_low">Від дешевих</option>
-          <option value="desc" data-translate="price_high">Від дорогих</option>
-        </select>
-      </div>
-      
-      <div class="filter-group">
-        <label data-translate="filter_status">Наявність</label>
-        <select id="status-filter">
-          <option value="all" data-translate="all">Всі</option>
-          <option value="in_stock" data-translate="in_stock">В наявності</option>
-          <option value="soon" data-translate="soon">Очікується</option>
-        </select>
-      </div>
-    </div>
 
     <div class="view-options">
       <button class="view-option active" data-view="grid" title="Сітка">
@@ -108,24 +197,6 @@
       </div>
     </section>
   </main>
-
-  <!-- Нижняя навигация для мобильных -->
-  <div class="mobile-bottom-nav">
-    <button id="catalog-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 3H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm10 0h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM10 13H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1zm10 0h-6a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1z"/></svg>
-      <span data-translate="catalog">Каталог</span>
-    </button>
-    
-    <button id="cart-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2c0-1.11.89-2 2-2zM1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1V2zm6 16a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2c0-1.11.89-2 2-2z"/></svg>
-      <span data-translate="cart_title">Корзина</span>
-    </button>
-    
-    <button id="checkout-btn">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-      <span data-translate="checkout">Оформити</span>
-    </button>
-  </div>
 
   <footer>
     <div class="footer-content">
